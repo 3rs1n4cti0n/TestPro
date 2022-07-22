@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:test_pro/Pages/register_page.dart';
+import 'package:flutter/services.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp
+    ]);
+    
     return Material(
       child: Container(
         color: Colors.white,
@@ -21,7 +26,8 @@ class LandingPage extends StatelessWidget {
                     fontSize: 12,
                     decoration: TextDecoration.none,
                     color: Colors.black,
-                    fontWeight: FontWeight.w100),
+                    fontWeight: FontWeight.w300),
+                textAlign: TextAlign.center,
               ),
               // place Holder
               InkWell(
@@ -49,7 +55,7 @@ class LandingPage extends StatelessWidget {
                           fontSize: 12,
                           decoration: TextDecoration.none,
                           color: Colors.black,
-                          fontWeight: FontWeight.w100),
+                          fontWeight: FontWeight.w300),
                     ),
                   ),
                 ),
@@ -74,7 +80,7 @@ class LandingPage extends StatelessWidget {
                         fontSize: 12,
                         decoration: TextDecoration.none,
                         color: Colors.black,
-                        fontWeight: FontWeight.w100),
+                        fontWeight: FontWeight.w300),
                   ),
                 ),
               ),
@@ -98,7 +104,7 @@ class LandingPage extends StatelessWidget {
                         fontSize: 12,
                         decoration: TextDecoration.none,
                         color: Colors.black,
-                        fontWeight: FontWeight.w100),
+                        fontWeight: FontWeight.w300),
                   ),
                 ),
               ),
@@ -124,7 +130,7 @@ class LandingPage extends StatelessWidget {
                           fontSize: 12,
                           decoration: TextDecoration.none,
                           color: Colors.black,
-                          fontWeight: FontWeight.w100),
+                          fontWeight: FontWeight.w300),
                     ),
                   ),
                 ),

@@ -5,7 +5,7 @@ void main() {
   runApp(MaterialApp(
     initialRoute: "/",
     routes: {
-      "/":(context) => LandingPage(),
+      "/":(context) => const LandingPage(),
     },
   ));
 }

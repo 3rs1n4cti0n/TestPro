@@ -12,9 +12,13 @@ class _UserInfoPagesState extends State<UserInfoPages>
     with TickerProviderStateMixin {
   bool femaleSelected = false;
   bool maleSelected = false;
-  int age = 13;
+
+  // keep track of inputs and initial values for the picker
+  int age = 50;
   int height = 170;
-  int weight = 60;
+  int weight = 70;
+
+  // controllers for scrolling and animating
   late PageController controller;
   late TabController tabController;
   late FixedExtentScrollController ageScrollController;
@@ -24,18 +28,22 @@ class _UserInfoPagesState extends State<UserInfoPages>
   @override
   void initState() {
     // add -1 because index starts at 0
-    ageScrollController = FixedExtentScrollController(initialItem: 50-1);
-    heightScrollController = FixedExtentScrollController(initialItem: 170-1);
-    weightScrollController = FixedExtentScrollController(initialItem: 70-1);
+    ageScrollController = FixedExtentScrollController(initialItem: age-1);
+    heightScrollController = FixedExtentScrollController(initialItem: height-1);
+    weightScrollController = FixedExtentScrollController(initialItem: weight-1);
     controller = PageController();
     tabController = TabController(length: 4, vsync: this);
     super.initState();
   }
 
+  // free memory from controllers to avoid leaks
   @override
   void dispose() {
     controller.dispose();
     tabController.dispose();
+    ageScrollController.dispose();
+    heightScrollController.dispose();
+    weightScrollController.dispose();
     super.dispose();
   }
 
@@ -425,6 +433,10 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                         Padding(
                                           padding: EdgeInsets.only(top: 15.0),
                                           child: Text("kg"),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 15.0),
+                                          child: Text("lb"),
                                         ),
                                       ],
                                     ),

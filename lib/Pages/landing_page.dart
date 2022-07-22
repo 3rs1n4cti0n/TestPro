@@ -10,7 +10,7 @@ class LandingPage extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp
     ]);
-    
+
     return Material(
       child: Container(
         color: Colors.white,
@@ -21,7 +21,7 @@ class LandingPage extends StatelessWidget {
             children: [
               Flexible(child: Image.asset("Assets/TestProLogo.png")),
               const Text(
-                "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+                "Text Pro will help you improve your health day by day, by providing you with the right information you need.",
                 style: TextStyle(
                     fontSize: 12,
                     decoration: TextDecoration.none,

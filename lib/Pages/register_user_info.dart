@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserInfoPages extends StatefulWidget {
@@ -16,9 +17,16 @@ class _UserInfoPagesState extends State<UserInfoPages>
   int weight = 60;
   late PageController controller;
   late TabController tabController;
+  late FixedExtentScrollController ageScrollController;
+  late FixedExtentScrollController heightScrollController;
+  late FixedExtentScrollController weightScrollController;
 
   @override
   void initState() {
+    // add -1 because index starts at 0
+    ageScrollController = FixedExtentScrollController(initialItem: 50-1);
+    heightScrollController = FixedExtentScrollController(initialItem: 170-1);
+    weightScrollController = FixedExtentScrollController(initialItem: 70-1);
     controller = PageController();
     tabController = TabController(length: 4, vsync: this);
     super.initState();
@@ -96,7 +104,12 @@ class _UserInfoPagesState extends State<UserInfoPages>
                         children: [
                           const Padding(
                             padding: EdgeInsets.only(top: 70),
-                            child: Text("What is your gender?",style: TextStyle(fontSize: 24,),),
+                            child: Text(
+                              "What is your gender?",
+                              style: TextStyle(
+                                fontSize: 24,
+                              ),
+                            ),
                           ),
                           const Expanded(
                             flex: 3,
@@ -177,20 +190,255 @@ class _UserInfoPagesState extends State<UserInfoPages>
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 500,
                       width: 500,
-                      color: Colors.blue,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 70),
+                            child: Text(
+                              "How old are you?",
+                              style: TextStyle(
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                          const Expanded(
+                            flex: 3,
+                            child: SizedBox(),
+                          ),
+                          SizedBox(
+                            height: 300,
+                            child: CupertinoPicker(
+                                scrollController: ageScrollController,
+                                looping: true,
+                                selectionOverlay: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.symmetric(
+                                    horizontal: BorderSide(
+                                        width: 3.0,
+                                        color: Colors.black.withOpacity(0.05)),
+                                  )),
+                                ),
+                                squeeze: 1.2,
+                                magnification: 1.3,
+                                backgroundColor: Colors.transparent,
+                                itemExtent: 50,
+                                onSelectedItemChanged: ((value) {
+                                  setState(() {
+                                    age = value;
+                                  });
+                                }),
+                                children: [
+                                  for (int i = 1; i <= 100; i++)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 15.0),
+                                      child: Text(i.toString()),
+                                    )
+                                ]),
+                          ),
+                          const Expanded(
+                            flex: 1,
+                            child: SizedBox(),
+                          ),
+                        ],
+                      ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 500,
                       width: 500,
-                      color: Colors.green,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 70),
+                            child: Text(
+                              "What is your Height?",
+                              style: TextStyle(
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                          const Expanded(
+                            flex: 3,
+                            child: SizedBox(),
+                          ),
+                          SizedBox(
+                            height: 250,
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: SizedBox(
+                                    width: 500,
+                                    child: CupertinoPicker(
+                                        scrollController:
+                                            heightScrollController,
+                                        looping: true,
+                                        selectionOverlay: Container(
+                                          decoration: BoxDecoration(
+                                              border: Border.symmetric(
+                                            horizontal: BorderSide(
+                                                width: 3.0,
+                                                color: Colors.black
+                                                    .withOpacity(0.05)),
+                                          )),
+                                        ),
+                                        squeeze: 1.2,
+                                        magnification: 1.3,
+                                        backgroundColor: Colors.transparent,
+                                        itemExtent: 50,
+                                        onSelectedItemChanged: ((value) {
+                                          setState(() {
+                                            age = value;
+                                          });
+                                        }),
+                                        children: [
+                                          for (int i = 1; i <= 230; i++)
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 15.0, 0, 0),
+                                              child: Text(i.toString()),
+                                            )
+                                        ]),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: SizedBox(
+                                    width: 70,
+                                    child: CupertinoPicker(
+                                      selectionOverlay: Container(),
+                                      squeeze: 1.2,
+                                      magnification: 1.3,
+                                      backgroundColor: Colors.transparent,
+                                      itemExtent: 50,
+                                      onSelectedItemChanged: ((value) {
+                                        setState(() {
+                                          height = value;
+                                        });
+                                      }),
+                                      children: const [
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 15.0),
+                                          child: Text("cm"),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 15.0),
+                                          child: Text("ft"),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Expanded(
+                            flex: 1,
+                            child: SizedBox(),
+                          ),
+                        ],
+                      ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 500,
                       width: 500,
-                      color: Colors.black,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 70),
+                            child: Text(
+                              "What is your Weight?",
+                              style: TextStyle(
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                          const Expanded(
+                            flex: 3,
+                            child: SizedBox(),
+                          ),
+                          SizedBox(
+                            height: 250,
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: SizedBox(
+                                    width: 500,
+                                    child: CupertinoPicker(
+                                      scrollController: weightScrollController,
+                                        looping: true,
+                                        selectionOverlay: Container(
+                                          decoration: BoxDecoration(
+                                              border: Border.symmetric(
+                                            horizontal: BorderSide(
+                                                width: 3.0,
+                                                color: Colors.black
+                                                    .withOpacity(0.05)),
+                                          )),
+                                        ),
+                                        squeeze: 1.2,
+                                        magnification: 1.3,
+                                        backgroundColor: Colors.transparent,
+                                        itemExtent: 50,
+                                        onSelectedItemChanged: ((value) {
+                                          setState(() {
+                                            age = value;
+                                          });
+                                        }),
+                                        children: [
+                                          for (int i = 1; i <= 150; i++)
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 15.0, 0, 0),
+                                              child: Text(i.toString()),
+                                            )
+                                        ]),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: SizedBox(
+                                    width: 70,
+                                    child: CupertinoPicker(
+                                      selectionOverlay: Container(),
+                                      squeeze: 1.2,
+                                      magnification: 1.3,
+                                      backgroundColor: Colors.transparent,
+                                      itemExtent: 50,
+                                      onSelectedItemChanged: ((value) {
+                                        setState(() {
+                                          height = value;
+                                        });
+                                      }),
+                                      children: const [
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 15.0),
+                                          child: Text("kg"),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Expanded(
+                            flex: 1,
+                            child: SizedBox(),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 )),
@@ -200,6 +448,11 @@ class _UserInfoPagesState extends State<UserInfoPages>
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
                 onTap: (() {
+                  if(controller.page!.toInt() == 4)
+                  {
+
+                    return;
+                  }
                   int nextPage = (controller.page!.toInt() + 1).clamp(0, 3);
                   controller.animateToPage(nextPage,
                       duration: const Duration(milliseconds: 150),

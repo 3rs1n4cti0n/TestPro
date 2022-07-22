@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:test_pro/Pages/register_name_page.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key? key}) : super(key: key);
@@ -55,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             Flexible(
                 child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   if (signUpIsSelected)
                     SizedBox(
-                      height: 300,
+                      height: 350,
                       width: 500,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -239,7 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           const Flexible(
                               child: SizedBox(
-                            height: 100,
+                            height: 200,
                           )),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -346,7 +347,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     padding: const EdgeInsets.only(top: 25),
                     child: InkWell(
                       onTap: (() {
-                        // TODO: Continue to next page
+                        Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => NamePage()));
+                
                       }),
                       child: Container(
                         height: 60,

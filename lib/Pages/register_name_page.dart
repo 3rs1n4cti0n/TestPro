@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_pro/Pages/register_user_info.dart';
 
 class NamePage extends StatelessWidget {
   NamePage({Key? key}) : super(key: key);
@@ -77,7 +78,7 @@ class NamePage extends StatelessWidget {
                 child: InkWell(
                         onTap: (() {
                           Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => NamePage()));
+                        MaterialPageRoute(builder: (context) => UserInfoPages()));
                         }),
                         child: Container(
                           height: 60,

@@ -160,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   if (signUpIsSelected)
                     SizedBox(
-                      height: 350,
+                      height: 270,
                       width: 500,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -240,48 +240,50 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           const Flexible(
                               child: SizedBox(
-                            height: 200,
+                            height: 150,
                           )),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: RichText(
-                                textAlign: TextAlign.center,
-                                text: TextSpan(
-                                    style: const TextStyle(color: Colors.black),
-                                    children: [
-                                      const TextSpan(
-                                          text:
-                                              "By clicking Sign Up, you agree to our "),
-                                      TextSpan(
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              // TODO: implement Terms of Service
-                                            },
-                                          text: "Terms of Service",
-                                          style: const TextStyle(
-                                              color: Colors.blue,
-                                              decoration:
-                                                  TextDecoration.underline)),
-                                      const TextSpan(
-                                          text: " and that you have read our "),
-                                      TextSpan(
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              // TODO: implement Privacy Policy
-                                            },
-                                          text: "Privacy Policy",
-                                          style: const TextStyle(
-                                              color: Colors.blue,
-                                              decoration:
-                                                  TextDecoration.underline)),
-                                    ])),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                      style: const TextStyle(color: Colors.black),
+                                      children: [
+                                        const TextSpan(
+                                            text:
+                                                "By clicking Sign Up, you agree to our "),
+                                        TextSpan(
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                // TODO: implement Terms of Service
+                                              },
+                                            text: "Terms of Service",
+                                            style: const TextStyle(
+                                                color: Colors.blue,
+                                                decoration:
+                                                    TextDecoration.underline)),
+                                        const TextSpan(
+                                            text: " and that you have read our "),
+                                        TextSpan(
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                // TODO: implement Privacy Policy
+                                              },
+                                            text: "Privacy Policy",
+                                            style: const TextStyle(
+                                                color: Colors.blue,
+                                                decoration:
+                                                    TextDecoration.underline)),
+                                      ])),
+                            ),
                           ),
                         ],
                       ),
                     ),
                   if (!signUpIsSelected)
                     SizedBox(
-                      height: 300,
+                      height: 270,
                       width: 500,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -343,31 +345,28 @@ class _RegisterPageState extends State<RegisterPage> {
                         ],
                       ),
                     ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 25),
-                    child: InkWell(
-                      onTap: (() {
-                        Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => NamePage()));
-                
-                      }),
-                      child: Container(
-                        height: 60,
-                        width: 400,
-                        decoration: BoxDecoration(
-                            color: Colors.indigo,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: const Center(
-                            child: Text(
-                          "Continue",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20),
-                        )),
-                      ),
+                    Flexible(child: SizedBox(height: 25,)),
+                  InkWell(
+                    onTap: (() {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => NamePage()));
+                    }),
+                    child: Container(
+                      height: 60,
+                      width: 400,
+                      decoration: BoxDecoration(
+                          color: Colors.indigo,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: const Center(
+                          child: Text(
+                        "Continue",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20),
+                      )),
                     ),
-                  )
+                  ),
                 ],
               ),
             )),

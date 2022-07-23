@@ -70,7 +70,22 @@ class LandingPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Flexible(child: Image.asset("Assets/TestProLogo.png")),
+              Flexible(
+                  child: ShaderMask(
+                      shaderCallback: ((bounds) {
+                        return const LinearGradient(
+                                colors: [Colors.black, Colors.green])
+                            .createShader(bounds);
+                      }),
+                      blendMode: BlendMode.srcATop,
+                      child: Image.asset(
+                        "Assets/TestProLogo.png",
+                        color: Colors.green,
+                      ))),
+              const Flexible(
+                  child: SizedBox(
+                height: 50,
+              )),
               const Text(
                 "Text Pro will help you improve your health day by day, by providing you with the right information you need.",
                 style: TextStyle(
@@ -88,11 +103,11 @@ class LandingPage extends StatelessWidget {
                 }),
                 child: Container(
                   height: 50,
-                  width: 400,
+                  width: 250,
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.3),
                           blurRadius: 5,
                           spreadRadius: 2)
                     ],
@@ -121,11 +136,11 @@ class LandingPage extends StatelessWidget {
                 }),
                 child: Container(
                   height: 50,
-                  width: 400,
+                  width: 250,
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.3),
                           blurRadius: 5,
                           spreadRadius: 2)
                     ],
@@ -154,11 +169,11 @@ class LandingPage extends StatelessWidget {
                 },
                 child: Container(
                   height: 50,
-                  width: 400,
+                  width: 250,
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.3),
                           blurRadius: 5,
                           spreadRadius: 2)
                     ],
@@ -188,11 +203,11 @@ class LandingPage extends StatelessWidget {
                 },
                 child: Container(
                   height: 50,
-                  width: 400,
+                  width: 250,
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.3),
                           blurRadius: 5,
                           spreadRadius: 2)
                     ],

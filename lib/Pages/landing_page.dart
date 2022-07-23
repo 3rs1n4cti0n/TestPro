@@ -114,15 +114,23 @@ class LandingPage extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(30)),
                   ),
-                  child: const Center(
-                    child: Text(
-                      "Continue with e-mail",
-                      style: TextStyle(
-                          fontSize: 12,
-                          decoration: TextDecoration.none,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w300),
-                    ),
+                  child: Row(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(3, 0, 5, 0),
+                        child: Icon(Icons.mail,size: 45,),
+                      ),
+                      Center(
+                        child: Text(
+                          "Continue with e-mail",
+                          style: TextStyle(
+                              fontSize: 12,
+                              decoration: TextDecoration.none,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -147,15 +155,23 @@ class LandingPage extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(30)),
                   ),
-                  child: const Center(
-                    child: Text(
-                      "Sign in with Facebook",
-                      style: TextStyle(
-                          fontSize: 12,
-                          decoration: TextDecoration.none,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w300),
-                    ),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: Image.asset("Assets/FacebookLogo.png",fit: BoxFit.contain,width: 45,height: 45,),
+                      ),
+                      const Center(
+                        child: Text(
+                          "Sign in with Facebook",
+                          style: TextStyle(
+                              fontSize: 12,
+                              decoration: TextDecoration.none,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -180,15 +196,23 @@ class LandingPage extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(30)),
                   ),
-                  child: const Center(
-                    child: Text(
-                      "Sign in with Google",
-                      style: TextStyle(
-                          fontSize: 12,
-                          decoration: TextDecoration.none,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w300),
-                    ),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: Image.asset("Assets/GoogleLogo.png",fit: BoxFit.contain,width: 45,height: 45,),
+                      ),
+                      const Center(
+                        child: Text(
+                          "Sign in with Google",
+                          style: TextStyle(
+                              fontSize: 12,
+                              decoration: TextDecoration.none,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -214,15 +238,20 @@ class LandingPage extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(30)),
                   ),
-                  child: const Center(
-                    child: Text(
-                      "Continue Without Signing Up",
-                      style: TextStyle(
-                          fontSize: 12,
-                          decoration: TextDecoration.none,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w300),
-                    ),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.account_circle_rounded,size: 50,),
+                      Expanded(
+                        child: Text(
+                          "Continue Without Signing Up",
+                          style: TextStyle(
+                              fontSize: 12,
+                              decoration: TextDecoration.none,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               )

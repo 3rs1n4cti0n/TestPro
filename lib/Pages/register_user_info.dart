@@ -28,9 +28,11 @@ class _UserInfoPagesState extends State<UserInfoPages>
   @override
   void initState() {
     // add -1 because index starts at 0
-    ageScrollController = FixedExtentScrollController(initialItem: age-1);
-    heightScrollController = FixedExtentScrollController(initialItem: height-1);
-    weightScrollController = FixedExtentScrollController(initialItem: weight-1);
+    ageScrollController = FixedExtentScrollController(initialItem: age - 1);
+    heightScrollController =
+        FixedExtentScrollController(initialItem: height - 1);
+    weightScrollController =
+        FixedExtentScrollController(initialItem: weight - 1);
     controller = PageController();
     tabController = TabController(length: 4, vsync: this);
     super.initState();
@@ -82,9 +84,17 @@ class _UserInfoPagesState extends State<UserInfoPages>
                   children: [
                     const Expanded(child: SizedBox()),
                     Flexible(
-                      child: Image.asset(
-                        "Assets/TestProLogo.png",
-                        height: 30,
+                      child: ShaderMask(
+                        blendMode: BlendMode.srcATop,
+                        shaderCallback: ((bounds) {
+                          return const LinearGradient(
+                                  colors: [Colors.black, Colors.green])
+                              .createShader(bounds);
+                        }),
+                        child: Image.asset(
+                          "Assets/TestProLogo.png",
+                          height: 30,
+                        ),
                       ),
                     ),
                     const Expanded(child: SizedBox()),
@@ -383,7 +393,8 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                   child: SizedBox(
                                     width: 500,
                                     child: CupertinoPicker(
-                                      scrollController: weightScrollController,
+                                        scrollController:
+                                            weightScrollController,
                                         looping: true,
                                         selectionOverlay: Container(
                                           decoration: BoxDecoration(
@@ -460,9 +471,7 @@ class _UserInfoPagesState extends State<UserInfoPages>
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
                 onTap: (() {
-                  if(controller.page!.toInt() == 4)
-                  {
-
+                  if (controller.page!.toInt() == 4) {
                     return;
                   }
                   int nextPage = (controller.page!.toInt() + 1).clamp(0, 3);

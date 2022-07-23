@@ -66,7 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     width: 400,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: Colors.grey),
+                        color: Colors.indigo[100]),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -96,13 +96,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                             blurRadius: 3,
                                             spreadRadius: 1)
                                     ]),
-                                child: const Center(
+                                child: Center(
                                   child: Text(
                                     "Sign Up",
                                     style: TextStyle(
                                       fontSize: 20,
                                       decoration: TextDecoration.none,
-                                      color: Colors.black,
+                                      color: (signUpIsSelected) ? Colors.black : Colors.white,
                                     ),
                                   ),
                                 ),
@@ -136,13 +136,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                             blurRadius: 3,
                                             spreadRadius: 1)
                                     ]),
-                                child: const Center(
+                                child: Center(
                                   child: Text(
                                     "Sign In",
                                     style: TextStyle(
                                       fontSize: 20,
                                       decoration: TextDecoration.none,
-                                      color: Colors.black,
+                                      color: (!signUpIsSelected) ? Colors.black : Colors.white,
                                     ),
                                   ),
                                 ),
@@ -345,7 +345,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ],
                       ),
                     ),
-                    Flexible(child: SizedBox(height: 25,)),
+                    const Flexible(child: SizedBox(height: 25,)),
                   InkWell(
                     onTap: (() {
                       Navigator.push(context,

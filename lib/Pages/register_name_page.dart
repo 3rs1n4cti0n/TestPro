@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_pro/Pages/register_user_info.dart';
 
+// ignore: must_be_immutable
 class NamePage extends StatelessWidget {
   NamePage({Key? key}) : super(key: key);
 

@@ -12,8 +12,8 @@ class LandingPage extends StatelessWidget {
 
   Future<void> logInAnonymously() async {
     try {
-      final userCredential = await FirebaseAuth.instance.signInAnonymously();
-    } on FirebaseAuthException {}
+      await FirebaseAuth.instance.signInAnonymously();
+    } catch (e) {}
   }
 
   Future<void> logInWithGoogle() async {
@@ -40,12 +40,9 @@ class LandingPage extends StatelessWidget {
         user = userCredential.user;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
-          print(e);
         } else if (e.code == 'invalid-credential') {
-          print(e);
         }
       } catch (e) {
-        print(e);
       }
     }
   }
@@ -118,7 +115,10 @@ class LandingPage extends StatelessWidget {
                     children: const [
                       Padding(
                         padding: EdgeInsets.fromLTRB(3, 0, 5, 0),
-                        child: Icon(Icons.mail,size: 45,),
+                        child: Icon(
+                          Icons.mail,
+                          size: 45,
+                        ),
                       ),
                       Center(
                         child: Text(
@@ -159,7 +159,12 @@ class LandingPage extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 3),
-                        child: Image.asset("Assets/FacebookLogo.png",fit: BoxFit.contain,width: 45,height: 45,),
+                        child: Image.asset(
+                          "Assets/FacebookLogo.png",
+                          fit: BoxFit.contain,
+                          width: 45,
+                          height: 45,
+                        ),
                       ),
                       const Center(
                         child: Text(
@@ -200,7 +205,12 @@ class LandingPage extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 3),
-                        child: Image.asset("Assets/GoogleLogo.png",fit: BoxFit.contain,width: 45,height: 45,),
+                        child: Image.asset(
+                          "Assets/GoogleLogo.png",
+                          fit: BoxFit.contain,
+                          width: 45,
+                          height: 45,
+                        ),
                       ),
                       const Center(
                         child: Text(
@@ -240,7 +250,10 @@ class LandingPage extends StatelessWidget {
                   ),
                   child: Row(
                     children: const [
-                      Icon(Icons.account_circle_rounded,size: 50,),
+                      Icon(
+                        Icons.account_circle_rounded,
+                        size: 50,
+                      ),
                       Expanded(
                         child: Text(
                           "Continue Without Signing Up",

@@ -14,9 +14,13 @@ class HomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.verified_user_rounded),
+          Icon(Icons.account_circle),
+
           if(user?.isAnonymous != null && user?.isAnonymous == true)
           Text('Anonymous'),
+
+          if(user?.isAnonymous == false)
+          Text(user!.uid),
 
           TextButton(onPressed: () {
             FirebaseAuth.instance.signOut();

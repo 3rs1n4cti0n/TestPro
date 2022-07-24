@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:test_pro/Pages/home_page.dart';
 import 'package:test_pro/Pages/register_name_page.dart';
+import 'package:test_pro/Utilities/fitness_app_user.dart';
+import 'package:crypto/crypto.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key? key}) : super(key: key);
@@ -13,10 +18,12 @@ class _RegisterPageState extends State<RegisterPage> {
   bool signUpIsSelected = true;
   String email = "";
   String password = "";
+  String rewritePassword = "";
   Color selectedColor = Colors.white;
   Color notSelectedColor = Colors.transparent;
   bool passwordIsEqual = false;
-  List<bool> isHidden = [true, true];
+  List<bool> isHidden = [true, true, true];
+  bool infoFilled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +109,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                     style: TextStyle(
                                       fontSize: 20,
                                       decoration: TextDecoration.none,
-                                      color: (signUpIsSelected) ? Colors.black : Colors.white,
+                                      color: (signUpIsSelected)
+                                          ? Colors.black
+                                          : Colors.white,
                                     ),
                                   ),
                                 ),
@@ -142,7 +151,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                     style: TextStyle(
                                       fontSize: 20,
                                       decoration: TextDecoration.none,
-                                      color: (!signUpIsSelected) ? Colors.black : Colors.white,
+                                      color: (!signUpIsSelected)
+                                          ? Colors.black
+                                          : Colors.white,
                                     ),
                                   ),
                                 ),
@@ -172,7 +183,15 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: SizedBox(
                               height: 45,
                               child: TextField(
-                                onChanged: ((value) => email = value),
+                                onChanged: ((value) {
+                                  email = value;
+                                  if (password != "" && email != "") {
+                                    infoFilled = true;
+                                  } else {
+                                    infoFilled = false;
+                                  }
+                                  setState(() {});
+                                }),
                                 textAlignVertical: TextAlignVertical.center,
                                 style: const TextStyle(fontSize: 20),
                                 decoration: InputDecoration(
@@ -182,14 +201,28 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                           ),
-                          const Text("Create Password"),
+                          const Text("Password"),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             child: SizedBox(
                               height: 45,
                               child: TextField(
                                 obscureText: isHidden[0],
-                                onChanged: (value) => password = value,
+                                onChanged: (value) {
+                                  password = value;
+                                  if (password.compareTo(rewritePassword) ==
+                                      0) {
+                                    passwordIsEqual = true;
+                                  } else {
+                                    passwordIsEqual = false;
+                                  }
+                                  if (password != "" && email != "") {
+                                    infoFilled = true;
+                                  } else {
+                                    infoFilled = false;
+                                  }
+                                  setState(() {});
+                                },
                                 textAlignVertical: TextAlignVertical.center,
                                 style: const TextStyle(fontSize: 20),
                                 decoration: InputDecoration(
@@ -215,9 +248,21 @@ class _RegisterPageState extends State<RegisterPage> {
                               height: 45,
                               child: TextField(
                                 onChanged: (value) {
-                                  if (password == value) {
+                                  rewritePassword = value;
+                                  if (password.compareTo(rewritePassword) ==
+                                      0) {
                                     passwordIsEqual = true;
+                                  } else {
+                                    passwordIsEqual = false;
                                   }
+                                  if (password != "" &&
+                                      email != "" &&
+                                      passwordIsEqual) {
+                                    infoFilled = true;
+                                  } else {
+                                    infoFilled = false;
+                                  }
+                                  setState(() {});
                                 },
                                 obscureText: isHidden[1],
                                 textAlignVertical: TextAlignVertical.center,
@@ -244,11 +289,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           )),
                           Flexible(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: RichText(
                                   textAlign: TextAlign.center,
                                   text: TextSpan(
-                                      style: const TextStyle(color: Colors.black),
+                                      style:
+                                          const TextStyle(color: Colors.black),
                                       children: [
                                         const TextSpan(
                                             text:
@@ -264,7 +311,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 decoration:
                                                     TextDecoration.underline)),
                                         const TextSpan(
-                                            text: " and that you have read our "),
+                                            text:
+                                                " and that you have read our "),
                                         TextSpan(
                                             recognizer: TapGestureRecognizer()
                                               ..onTap = () {
@@ -295,6 +343,15 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: SizedBox(
                               height: 45,
                               child: TextField(
+                                onChanged: (value) {
+                                  email = value;
+                                  if (password != "" && email != "") {
+                                    infoFilled = true;
+                                  } else {
+                                    infoFilled = false;
+                                  }
+                                  setState(() {});
+                                },
                                 textAlignVertical: TextAlignVertical.center,
                                 style: const TextStyle(fontSize: 20),
                                 decoration: InputDecoration(
@@ -310,6 +367,16 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: SizedBox(
                               height: 45,
                               child: TextField(
+                                obscureText: isHidden[2],
+                                onChanged: (value) {
+                                  password = value;
+                                  if (password != "" && email != "") {
+                                    infoFilled = true;
+                                  } else {
+                                    infoFilled = false;
+                                  }
+                                  setState(() {});
+                                },
                                 textAlignVertical: TextAlignVertical.center,
                                 style: const TextStyle(fontSize: 20),
                                 decoration: InputDecoration(
@@ -317,7 +384,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                       splashColor: Colors.transparent,
                                       icon: const Icon(
                                           Icons.remove_red_eye_outlined),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        isHidden[2] = !isHidden[2];
+                                        setState(() {});
+                                      },
                                     ),
                                     border: OutlineInputBorder(
                                         borderRadius:
@@ -345,17 +415,40 @@ class _RegisterPageState extends State<RegisterPage> {
                         ],
                       ),
                     ),
-                    const Flexible(child: SizedBox(height: 25,)),
+                  const Flexible(
+                      child: SizedBox(
+                    height: 25,
+                  )),
                   InkWell(
                     onTap: (() {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => NamePage()));
+                      if (signUpIsSelected) {
+                        FitnessUser.email = email;
+                        // encrpyt data before storing to database
+                        FitnessUser.password =
+                            sha256.convert(utf8.encode(password)).toString();
+
+                        if (infoFilled && passwordIsEqual) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NamePage()));
+                        }
+                      } else if (!signUpIsSelected) {
+                        FirebaseAuth.instance.signInWithEmailAndPassword(
+                            email: email, password: password);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()));
+                      }
                     }),
                     child: Container(
                       height: 60,
                       width: 400,
                       decoration: BoxDecoration(
-                          color: Colors.indigo,
+                          color: (infoFilled && passwordIsEqual)
+                              ? Colors.indigo
+                              : Colors.indigo[200],
                           borderRadius: BorderRadius.circular(10)),
                       child: const Center(
                           child: Text(

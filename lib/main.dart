@@ -8,6 +8,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     initialRoute: "/",

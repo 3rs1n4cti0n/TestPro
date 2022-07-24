@@ -33,7 +33,8 @@ dependencies:
   flutter_facebook_auth: ^4.3.0
   firebase_core: ^1.15.0
   firebase_auth: ^3.5.0
-
+  firebase_database: ^9.0.20
+  crypto: ^3.0.2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

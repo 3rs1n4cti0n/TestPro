@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:test_pro/Pages/register_user_info.dart';
+import 'package:test_pro/Utilities/fitness_app_user.dart';
 
 // ignore: must_be_immutable
 class NamePage extends StatelessWidget {
   NamePage({Key? key}) : super(key: key);
-
   String name = "";
 
   @override
@@ -63,40 +63,46 @@ class NamePage extends StatelessWidget {
                       )),
                       TextField(
                         onChanged: (value) => name = value,
-                        decoration: const InputDecoration(hintText: "Your Name"),
+                        decoration:
+                            const InputDecoration(hintText: "Your Name"),
                       ),
                       const Flexible(
                           child: SizedBox(
                         height: 100,
                       )),
-                      
                     ],
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical:50,horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
                 child: InkWell(
-                        onTap: (() {
-                          Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => UserInfoPages()));
-                        }),
-                        child: Container(
-                          height: 60,
-                          width: 400,
-                          decoration: BoxDecoration(
-                              color: Colors.indigo,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Center(
-                              child: Text(
-                            "Continue",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20),
-                          )),
-                        ),
-                      ),
+                  onTap: (() {
+                    if (name != "") {
+                      FitnessUser.name = name;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserInfoPages()));
+                    }
+                  }),
+                  child: Container(
+                    height: 60,
+                    width: 400,
+                    decoration: BoxDecoration(
+                        color: Colors.indigo,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Center(
+                        child: Text(
+                      "Continue",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20),
+                    )),
+                  ),
+                ),
               ),
             ],
           ),

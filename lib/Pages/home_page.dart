@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:test_pro/Utilities/fitness_app_user.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key, required this.user}) : super(key: key);
-
-  final User? user;
+  HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class HomePage extends StatelessWidget {
                           children: [
                             Flexible(
                               child: Text(
-                                "Welcome to TextPRO,\n${user!.displayName!}!",
+                                "Welcome to TextPRO,\n${FirebaseAuth.instance.currentUser!.isAnonymous ? "Anonymous" : FitnessUser.name}!",
                                 overflow: TextOverflow.clip,
                                 style: const TextStyle(
                                     color: Colors.white,
@@ -56,10 +57,17 @@ class HomePage extends StatelessWidget {
                                     decoration: TextDecoration.none),
                               ),
                             ),
-                            const Flexible(
-                                child: SizedBox(
-                              height: 10,
-                            )),
+                            Text(
+                              FirebaseAuth.instance.currentUser!.isAnonymous
+                                  ? "Unknown"
+                                  : FitnessUser.gender
+                                      ? "male"
+                                      : "female",
+                              style: TextStyle(
+                                  fontSize: 32,
+                                  color: Colors.orange[800],
+                                  decoration: TextDecoration.none),
+                            ),
                             const Expanded(child: SizedBox()),
                             Row(
                               children: [
@@ -115,38 +123,41 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "age: 22",
-                      style: TextStyle(
+                    Text(
+                      "age: ${FirebaseAuth.instance.currentUser!.isAnonymous ? "Unknown" : FitnessUser.age}",
+                      style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w100,
                           decoration: TextDecoration.none),
                     ),
                     Divider(
+                      thickness: 1,
                       color: Colors.black.withOpacity(0.4),
                     ),
-                    const Text(
-                      "height: 170",
-                      style: TextStyle(
+                    Text(
+                      "height: ${FirebaseAuth.instance.currentUser!.isAnonymous ? "Unknown" : FitnessUser.height}",
+                      style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w100,
                           decoration: TextDecoration.none),
                     ),
                     Divider(
+                      thickness: 1,
                       color: Colors.black.withOpacity(0.4),
                     ),
-                    const Text(
-                      "weight: 80",
-                      style: TextStyle(
+                    Text(
+                      "weight: ${FirebaseAuth.instance.currentUser!.isAnonymous ? "Unknown" : FitnessUser.weight}",
+                      style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w100,
                           decoration: TextDecoration.none),
                     ),
                     Divider(
-                      color: Colors.black.withOpacity(0.2),
+                      thickness: 1,
+                      color: Colors.black.withOpacity(0.4),
                     ),
                   ],
                 ),

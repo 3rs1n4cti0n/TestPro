@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,6 +43,7 @@ class _UserInfoPagesState extends State<UserInfoPages>
   }
 
   void setDataToFirestore() async {
+    FitnessUser.uid = FirebaseAuth.instance.currentUser!.uid;
     FirebaseFirestore.instance.collection("users").doc(FitnessUser.uid).set({
       "name": FitnessUser.name,
       "uid": FitnessUser.uid,
@@ -499,13 +498,15 @@ class _UserInfoPagesState extends State<UserInfoPages>
                 onTap: (() async {
                   if (controller.page!.toInt() == 3) {
                     try {
-                      setDataToFirestore();
                       if (FirebaseAuth.instance.currentUser == null) {
                         await FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
                                 email: FitnessUser.email,
                                 password: FitnessUser.password)
                             .then((value) {
+                          FitnessUser.uid =
+                              FirebaseAuth.instance.currentUser!.uid;
+                          setDataToFirestore();
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
                           Navigator.push(
@@ -514,7 +515,6 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                   builder: (context) => HomePage()));
                         });
                       } else {
-
                         Navigator.of(context)
                             .popUntil((route) => route.isFirst);
                         Navigator.push(

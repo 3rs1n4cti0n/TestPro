@@ -14,18 +14,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future<void> _retrieveData() async {
-    var firebaseUser = FirebaseAuth.instance.currentUser;
+    if (FirebaseAuth.instance.currentUser!.isAnonymous) return;
+    FitnessUser.uid = FirebaseAuth.instance.currentUser!.uid;
+
     var userInfo = await FirebaseFirestore.instance
         .collection("users")
         .doc(FitnessUser.uid)
         .get();
 
-    FitnessUser.age = userInfo["age"];
-    FitnessUser.email = userInfo["email"];
-    FitnessUser.gender = userInfo["gender"];
-    FitnessUser.height = userInfo["height"];
-    FitnessUser.name = userInfo["name"];
-    FitnessUser.weight = userInfo["weight"];
+    FitnessUser.age = userInfo.data()!.containsKey("age") ? userInfo["age"] : -1;
+    FitnessUser.email = userInfo.data()!.containsKey("email") ? userInfo["email"] : "error";
+    FitnessUser.gender = userInfo.data()!.containsKey("gender") ? userInfo["gender"] : false;
+    FitnessUser.height = userInfo.data()!.containsKey("height") ? userInfo["height"] : -1;
+    FitnessUser.name = userInfo.data()!.containsKey("name") ? userInfo["name"] : "error";
+    FitnessUser.weight = userInfo.data()!.containsKey("weight") ? userInfo["weight"] : -1;
   }
 
   @override
@@ -96,8 +98,8 @@ class _HomePageState extends State<HomePage> {
                                 FirebaseAuth.instance.currentUser!.isAnonymous
                                     ? "Unknown"
                                     : FitnessUser.gender
-                                        ? "male"
-                                        : "female",
+                                        ? "female"
+                                        : "male",
                                 style: TextStyle(
                                     fontSize: 32,
                                     color: Colors.orange[800],

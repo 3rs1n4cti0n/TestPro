@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:test_pro/Pages/home_page.dart';
@@ -13,6 +14,33 @@ class LandingPage extends StatelessWidget {
   LandingPage({Key? key}) : super(key: key);
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   User? user;
+
+  Future<bool> _retrieveData() async {
+    try {
+      // Fetch sign-in methods for the email address
+      final list = await FirebaseAuth.instance
+          .fetchSignInMethodsForEmail(FitnessUser.email);
+
+      // In case list is not empty
+      if (list.isNotEmpty) {
+        var userInfo = await FirebaseFirestore.instance
+            .collection("users")
+            .doc(FitnessUser.uid)
+            .get();
+        FitnessUser.age = userInfo["age"];
+        FitnessUser.email = userInfo["email"];
+        FitnessUser.gender = userInfo["gender"];
+        FitnessUser.height = userInfo["height"];
+        FitnessUser.name = userInfo["name"];
+        FitnessUser.weight = userInfo["weight"];
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return true;
+    }
+  }
 
   Future<void> logInAnonymously() async {
     try {
@@ -150,8 +178,16 @@ class LandingPage extends StatelessWidget {
               ),
               InkWell(
                 onTap: (() async {
-                  logInWithFacebook().then((value) => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => NamePage())));
+                  bool doesUserExists = await _retrieveData();
+                  logInWithFacebook().then((value) {
+                    if (doesUserExists == false) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => NamePage()));
+                    } else if (doesUserExists == true) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    }
+                  });
                 }),
                 child: Container(
                   height: 50,
@@ -193,9 +229,16 @@ class LandingPage extends StatelessWidget {
               ),
               InkWell(
                 onTap: () async {
-                  await logInWithGoogle().then((value) => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => NamePage())));
+                  bool doesUserExists = await _retrieveData();
+                  await logInWithGoogle().then((value) {
+                    if (doesUserExists == false) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => NamePage()));
+                    } else if (doesUserExists == true) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    }
+                  });
                 },
                 child: Container(
                   height: 50,

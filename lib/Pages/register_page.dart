@@ -26,19 +26,31 @@ class _RegisterPageState extends State<RegisterPage> {
   List<bool> isHidden = [true, true, true];
   bool infoFilled = false;
 
-  Future<void> _retrieveData() async {
-    var firebaseUser = FirebaseAuth.instance.currentUser;
-    var userInfo = await FirebaseFirestore.instance
-        .collection("tryingdata")
-        .doc(firebaseUser?.uid)
-        .get();
+  Future<bool> _retrieveData() async {
+    try {
+      // Fetch sign-in methods for the email address
+      final list = await FirebaseAuth.instance
+          .fetchSignInMethodsForEmail(FitnessUser.email);
 
-    FitnessUser.age = userInfo["age"];
-    FitnessUser.email = userInfo["email"];
-    FitnessUser.gender = userInfo["gender"];
-    FitnessUser.height = userInfo["height"];
-    FitnessUser.name = userInfo["name"];
-    FitnessUser.weight = userInfo["weight"];
+      // In case list is not empty
+      if (list.isNotEmpty) {
+        var userInfo = await FirebaseFirestore.instance
+            .collection("users")
+            .doc(FitnessUser.uid)
+            .get();
+        FitnessUser.age = userInfo["age"];
+        FitnessUser.email = userInfo["email"];
+        FitnessUser.gender = userInfo["gender"];
+        FitnessUser.height = userInfo["height"];
+        FitnessUser.name = userInfo["name"];
+        FitnessUser.weight = userInfo["weight"];
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return true;
+    }
   }
 
   @override
@@ -319,7 +331,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                         TextSpan(
                                             recognizer: TapGestureRecognizer()
                                               ..onTap = () {
-                                                // TODO: implement Terms of Service
                                               },
                                             text: "Terms of Service",
                                             style: const TextStyle(
@@ -332,7 +343,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                         TextSpan(
                                             recognizer: TapGestureRecognizer()
                                               ..onTap = () {
-                                                // TODO: implement Privacy Policy
                                               },
                                             text: "Privacy Policy",
                                             style: const TextStyle(
@@ -361,6 +371,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               child: TextField(
                                 onChanged: (value) {
                                   email = value;
+                                  FitnessUser.email = email;
                                   if (password != "" && email != "") {
                                     infoFilled = true;
                                   } else {
@@ -386,6 +397,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 obscureText: isHidden[2],
                                 onChanged: (value) {
                                   password = value;
+                                  FitnessUser.password = password;
                                   if (password != "" && email != "") {
                                     infoFilled = true;
                                   } else {
@@ -450,21 +462,32 @@ class _RegisterPageState extends State<RegisterPage> {
                                   builder: (context) => NamePage()));
                         }
                       } else if (!signUpIsSelected) {
-                        if(FirebaseAuth.instance.currentUser == null) {
-                          await FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                                email: email,
-                                password: FitnessUser.password)
-                            .then((value) => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage())));
-                        }
-                        else{
+                        bool doesUserExists = await _retrieveData();
+                        if (doesUserExists == false) {
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                           Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NamePage()));
+                        } else if (doesUserExists == true) {
+                          await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: FitnessUser.email,
+                                  password: sha256
+                                      .convert(
+                                          utf8.encode(FitnessUser.password))
+                                      .toString())
+                              .then((value) {
+                            Navigator.of(context)
+                                .popUntil((route) => route.isFirst);
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => HomePage()));
+                          }).catchError((e){
+                            
+                          });
                         }
                       }
                     }),

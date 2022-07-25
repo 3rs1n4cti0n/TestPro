@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_pro/Pages/home_page.dart';
@@ -19,7 +19,6 @@ class _UserInfoPagesState extends State<UserInfoPages>
   bool femaleSelected = false;
   bool maleSelected = false;
   FitnessUser fitnessUser = FitnessUser();
-
   // keep track of inputs and initial values for the picker
   int age = 50;
   int height = 170;
@@ -43,6 +42,19 @@ class _UserInfoPagesState extends State<UserInfoPages>
     controller = PageController();
     tabController = TabController(length: 4, vsync: this);
     super.initState();
+  }
+
+  void setDataToFirestore() async {
+    FirebaseFirestore.instance.collection("users").doc(FitnessUser.uid).set({
+      "name": FitnessUser.name,
+      "uid": FitnessUser.uid,
+      "email": FitnessUser.email,
+      "gender": FitnessUser.gender,
+      "age": FitnessUser.age,
+      "weight": FitnessUser.weight,
+      "height": FitnessUser.height,
+      "password": FitnessUser.password
+    });
   }
 
   // free memory from controllers to avoid leaks
@@ -262,7 +274,7 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                 itemExtent: 50,
                                 onSelectedItemChanged: ((value) {
                                   setState(() {
-                                    age = value;
+                                    age = value + 1;
                                     FitnessUser.age = age;
                                   });
                                 }),
@@ -328,7 +340,7 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                         itemExtent: 50,
                                         onSelectedItemChanged: ((value) {
                                           setState(() {
-                                            height = value;
+                                            height = value + 1;
                                             FitnessUser.height = height;
                                           });
                                         }),
@@ -426,7 +438,7 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                         itemExtent: 50,
                                         onSelectedItemChanged: ((value) {
                                           setState(() {
-                                            weight = value;
+                                            weight = value + 1;
                                             FitnessUser.weight = weight;
                                           });
                                         }),
@@ -486,12 +498,13 @@ class _UserInfoPagesState extends State<UserInfoPages>
               child: InkWell(
                 onTap: (() async {
                   if (controller.page!.toInt() == 3) {
-                    if (FirebaseAuth.instance.currentUser == null) {
-                      try {
+                    try {
+                      setDataToFirestore();
+                      if (FirebaseAuth.instance.currentUser == null) {
                         await FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
                                 email: FitnessUser.email,
-                                password: sha256.convert(utf8.encode(FitnessUser.password)).toString())
+                                password: FitnessUser.password)
                             .then((value) {
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
@@ -500,8 +513,16 @@ class _UserInfoPagesState extends State<UserInfoPages>
                               MaterialPageRoute(
                                   builder: (context) => HomePage()));
                         });
-                      } catch (e) {}
-                    }
+                      } else {
+
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()));
+                      }
+                    } catch (e) {}
                   }
                   int nextPage = (controller.page!.toInt() + 1).clamp(0, 3);
                   controller.animateToPage(nextPage,

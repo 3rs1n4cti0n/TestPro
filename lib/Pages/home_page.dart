@@ -1,11 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:test_pro/Utilities/fitness_app_user.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Future<void> _retrieveData() async {
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    var userInfo = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FitnessUser.uid)
+        .get();
+
+    FitnessUser.age = userInfo["age"];
+    FitnessUser.email = userInfo["email"];
+    FitnessUser.gender = userInfo["gender"];
+    FitnessUser.height = userInfo["height"];
+    FitnessUser.name = userInfo["name"];
+    FitnessUser.weight = userInfo["weight"];
+  }
+
+  @override
+  void initState() {
+    _retrieveData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

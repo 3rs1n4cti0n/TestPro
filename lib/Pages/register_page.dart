@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,21 @@ class _RegisterPageState extends State<RegisterPage> {
   bool passwordIsEqual = false;
   List<bool> isHidden = [true, true, true];
   bool infoFilled = false;
+
+  Future<void> _retrieveData() async {
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    var userInfo = await FirebaseFirestore.instance
+        .collection("tryingdata")
+        .doc(firebaseUser?.uid)
+        .get();
+
+    FitnessUser.age = userInfo["age"];
+    FitnessUser.email = userInfo["email"];
+    FitnessUser.gender = userInfo["gender"];
+    FitnessUser.height = userInfo["height"];
+    FitnessUser.name = userInfo["name"];
+    FitnessUser.weight = userInfo["weight"];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -434,16 +450,22 @@ class _RegisterPageState extends State<RegisterPage> {
                                   builder: (context) => NamePage()));
                         }
                       } else if (!signUpIsSelected) {
-                        await FirebaseAuth.instance
+                        if(FirebaseAuth.instance.currentUser == null) {
+                          await FirebaseAuth.instance
                             .signInWithEmailAndPassword(
                                 email: email,
-                                password: sha256
-                                    .convert(utf8.encode(password))
-                                    .toString())
+                                password: FitnessUser.password)
                             .then((value) => Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => HomePage())));
+                        }
+                        else{
+                          Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()));
+                        }
                       }
                     }),
                     child: Container(

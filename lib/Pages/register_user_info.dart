@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -481,16 +484,24 @@ class _UserInfoPagesState extends State<UserInfoPages>
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
-                onTap: (() {
+                onTap: (() async {
                   if (controller.page!.toInt() == 3) {
                     if (FirebaseAuth.instance.currentUser == null) {
                       try {
-                        FirebaseAuth.instance.createUserWithEmailAndPassword(email: FitnessUser.email, password: FitnessUser.password);
+                        await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: FitnessUser.email,
+                                password: sha256.convert(utf8.encode(FitnessUser.password)).toString())
+                            .then((value) {
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        });
                       } catch (e) {}
                     }
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
                   }
                   int nextPage = (controller.page!.toInt() + 1).clamp(0, 3);
                   controller.animateToPage(nextPage,

@@ -420,7 +420,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 25,
                   )),
                   InkWell(
-                    onTap: (() {
+                    onTap: (() async {
                       if (signUpIsSelected) {
                         FitnessUser.email = email;
                         // encrpyt data before storing to database
@@ -434,12 +434,16 @@ class _RegisterPageState extends State<RegisterPage> {
                                   builder: (context) => NamePage()));
                         }
                       } else if (!signUpIsSelected) {
-                        FirebaseAuth.instance.signInWithEmailAndPassword(
-                            email: email, password: password);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomePage()));
+                        await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: email,
+                                password: sha256
+                                    .convert(utf8.encode(password))
+                                    .toString())
+                            .then((value) => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage())));
                       }
                     }),
                     child: Container(

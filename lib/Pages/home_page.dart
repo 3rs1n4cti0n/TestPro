@@ -11,10 +11,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        // pop to landing page
         await FirebaseAuth.instance.signOut().then((value) =>
             Navigator.of(context).popUntil((route) => route.isFirst));
-
-        return true;
+        // no need for WillPopScope to pop
+        return false;
       },
       child: SafeArea(
         child: Container(

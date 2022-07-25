@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:test_pro/Pages/home_page.dart';
+import 'package:test_pro/Utilities/fitness_app_user.dart';
 
 class UserInfoPages extends StatefulWidget {
   UserInfoPages({Key? key}) : super(key: key);
@@ -12,7 +16,7 @@ class _UserInfoPagesState extends State<UserInfoPages>
     with TickerProviderStateMixin {
   bool femaleSelected = false;
   bool maleSelected = false;
-
+  FitnessUser fitnessUser = FitnessUser();
   // keep track of inputs and initial values for the picker
   int age = 50;
   int height = 170;
@@ -38,6 +42,20 @@ class _UserInfoPagesState extends State<UserInfoPages>
     super.initState();
   }
 
+  void setDataToFirestore() async {
+    FitnessUser.uid = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance.collection("users").doc(FitnessUser.uid).set({
+      "name": FitnessUser.name,
+      "uid": FitnessUser.uid,
+      "email": FitnessUser.email,
+      "gender": FitnessUser.gender,
+      "age": FitnessUser.age,
+      "weight": FitnessUser.weight,
+      "height": FitnessUser.height,
+      "password": FitnessUser.password
+    });
+  }
+
   // free memory from controllers to avoid leaks
   @override
   void dispose() {
@@ -51,6 +69,10 @@ class _UserInfoPagesState extends State<UserInfoPages>
 
   @override
   Widget build(BuildContext context) {
+    FitnessUser.age = age;
+    FitnessUser.height = height;
+    FitnessUser.weight = weight;
+    FitnessUser.gender = femaleSelected;
     return SafeArea(
       child: Material(
         child: Column(
@@ -143,7 +165,9 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                   onPressed: () {
                                     femaleSelected = true;
                                     maleSelected = false;
-                                    setState(() {});
+                                    setState(() {
+                                      FitnessUser.gender = false;
+                                    });
                                   },
                                   constraints: const BoxConstraints(
                                       minHeight: 150, minWidth: 150),
@@ -174,7 +198,9 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                   onPressed: () {
                                     femaleSelected = false;
                                     maleSelected = true;
-                                    setState(() {});
+                                    setState(() {
+                                      FitnessUser.gender = true;
+                                    });
                                   },
                                   constraints: const BoxConstraints(
                                       minHeight: 150, minWidth: 150),
@@ -247,7 +273,8 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                 itemExtent: 50,
                                 onSelectedItemChanged: ((value) {
                                   setState(() {
-                                    age = value;
+                                    age = value + 1;
+                                    FitnessUser.age = age;
                                   });
                                 }),
                                 children: [
@@ -312,7 +339,8 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                         itemExtent: 50,
                                         onSelectedItemChanged: ((value) {
                                           setState(() {
-                                            age = value;
+                                            height = value + 1;
+                                            FitnessUser.height = height;
                                           });
                                         }),
                                         children: [
@@ -337,9 +365,7 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                       backgroundColor: Colors.transparent,
                                       itemExtent: 50,
                                       onSelectedItemChanged: ((value) {
-                                        setState(() {
-                                          height = value;
-                                        });
+                                        setState(() {});
                                       }),
                                       children: const [
                                         Padding(
@@ -411,7 +437,8 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                         itemExtent: 50,
                                         onSelectedItemChanged: ((value) {
                                           setState(() {
-                                            age = value;
+                                            weight = value + 1;
+                                            FitnessUser.weight = weight;
                                           });
                                         }),
                                         children: [
@@ -436,9 +463,7 @@ class _UserInfoPagesState extends State<UserInfoPages>
                                       backgroundColor: Colors.transparent,
                                       itemExtent: 50,
                                       onSelectedItemChanged: ((value) {
-                                        setState(() {
-                                          height = value;
-                                        });
+                                        setState(() {});
                                       }),
                                       children: const [
                                         Padding(
@@ -470,9 +495,34 @@ class _UserInfoPagesState extends State<UserInfoPages>
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
-                onTap: (() {
-                  if (controller.page!.toInt() == 4) {
-                    return;
+                onTap: (() async {
+                  if (controller.page!.toInt() == 3) {
+                    try {
+                      if (FirebaseAuth.instance.currentUser == null) {
+                        await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: FitnessUser.email,
+                                password: FitnessUser.password)
+                            .then((value) {
+                          FitnessUser.uid =
+                              FirebaseAuth.instance.currentUser!.uid;
+                          setDataToFirestore();
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        });
+                      } else {
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()));
+                      }
+                    } catch (e) {}
                   }
                   int nextPage = (controller.page!.toInt() + 1).clamp(0, 3);
                   controller.animateToPage(nextPage,
